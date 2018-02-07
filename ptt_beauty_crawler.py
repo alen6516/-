@@ -28,7 +28,11 @@ class Beauty_crawler():
     def _get_post_time(self,soup):
         time_list=soup.find_all('span', {'class':'article-meta-value'})[-1].get_text().split(' ')
         # ['Wed', 'Feb', '', '7', '11:29:30', '2018']
-        return '_'+time_list[-1]+"_"+time_list[1]+"_"+time_list[3]
+        # ['Thu', 'Sep', '15', '22:57:26', '2016']
+        year=time_list[-1]
+        month=time_list[1]
+        date=time_list[2] if time_list[2] else time_list[3]       
+        return '('+year+"_"+month+"_"+date+')'
  
     def makedir(self, dir_name):
         try:
