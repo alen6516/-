@@ -14,7 +14,10 @@ class Beauty_crawler():
         
 
     def set_path(self):
-        self.download_path=input("give the path:\n")
+        self.download_path=input("give the path: (press Enter to cancel)\n")
+        if not self.download_path:
+            self.download_path='./'
+
         if self.download_path[-1]!='/':
             self.download_path+='/'
         if self.download_path[0]=='~':
