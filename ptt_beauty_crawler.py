@@ -25,7 +25,11 @@ class Beauty_crawler():
 
     def _get_title(self, soup):
         return soup.find('meta', property="og:title")["content"]
-    
+    def _get_post_time(self,soup):
+        time_list=soup.find_all('span', {'class':'article-meta-value'})[-1].get_text().split(' ')
+        # ['Wed', 'Feb', '', '7', '11:29:30', '2018']
+        return '_'+time_list[-1]+"_"+time_list[1]+"_"+time_list[3]
+ 
     def makedir(self, dir_name):
         try:
             os.makedirs(dir_name)
@@ -41,7 +45,8 @@ class Beauty_crawler():
         pa2='https://imgur.com/.+'
 
         title = self._get_title(soup)
-        path=self.download_path+title+'/'
+        post_time=self._get_post_time(soup)
+        path=self.download_path+title+post_time+'/'
         self.makedir(path)
 
         for a in soup.find_all('a', href=True):
