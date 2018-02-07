@@ -9,4 +9,4 @@
 * auto name the directory as the title of the post
 
 ## envi
-* python 3.4.3
+* Ubuntu 14.04 + python 3.4.3
