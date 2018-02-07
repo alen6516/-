@@ -1,7 +1,7 @@
 # ptt_beauty_crawler
 
 ## function
-### download the jpg files from a given url of a post on PTT Beauty board (https://www.ptt.cc/bbs/Beauty/index2392.html) 
+### download the jpg files from a given url of a post on PTT Beauty board (https://www.ptt.cc/bbs/Beauty/index.html) 
 
 ## feature
 * set download_path
