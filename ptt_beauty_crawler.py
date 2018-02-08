@@ -44,12 +44,17 @@ class Beauty_crawler():
             if e.errno != errno.EEXIST:
                 raise
 
+    def _write(self, filename, url):
+        with open(filename, 'wb') as f:
+            resp=requests.get(url, verify=False)
+            f.write(resp.content)
+
     def download(self):
         target=input("give the target url:\n")
         res=requests.get(target, verify=False)
         soup = BeautifulSoup(res.text)
-        pa1='https://i.imgur.com/.+\.jpg'
-        pa2='https://imgur.com/.+'
+        pa1='https://i.imgur.com..+\.jpg'
+        pa2='https://imgur\..+'
 
         title = self._get_title(soup)
         post_time=self._get_post_time(soup)
@@ -62,11 +67,22 @@ class Beauty_crawler():
             ans2=re.findall(pa2, str)
             if ans1:
                 for url in ans1:
-                    urlretrieve(url, path+url.split('/')[-1])
+                    file_path=path+url.split('/')[-1]
+                    #print(url)
+                    #urlretrieve(url, path+url.split('/')[-1])
+                    self._write(file_path, url)
             if ans2:
                 for url in ans2:
-                    url="https://i."+url.split('https://')[1]+'.jpg'
-                    urlretrieve(url, path+url.split('/')[-1])
+                    if url[-3:]=='jpg':
+                        #print(url)
+                        file_path=path+url.split('/')[-1]
+                        self._write(file_path, url)
+                    else:
+                        url="https://i."+url.split('https://')[1]+'.jpg'
+                        file_path=path+url.split('/')[-1]
+                        #print(url)
+                        #urlretrieve(url, path+url.split('/')[-1])
+                        self._write(file_path, url)
 
 
 if __name__=='__main__':
