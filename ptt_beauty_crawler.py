@@ -45,6 +45,8 @@ class Beauty_crawler():
                 raise
 
     def _write(self, filename, url):
+        # to avoid errors occuring in ssl verification
+        # using requests.get() to replace urlretrieve()
         with open(filename, 'wb') as f:
             resp=requests.get(url, verify=False)
             f.write(resp.content)
