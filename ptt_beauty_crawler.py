@@ -55,8 +55,8 @@ class Beauty_crawler():
         target=input("give the target url:\n")
         res=requests.get(target, verify=False)
         soup = BeautifulSoup(res.text)
-        pa1='https://i.imgur.com..+\.jpg'
-        pa2='https://imgur\..+'
+        pa1='https?://i.imgur.com..+\.jpg'
+        pa2='https?://imgur\..+'
 
         title = self._get_title(soup)
         post_time=self._get_post_time(soup)
