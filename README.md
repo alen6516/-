@@ -10,3 +10,7 @@
 
 ## envi
 * Ubuntu 14.04 + python 3.4.3
+
+## prerequest
+* python3
+* pip install requests[security]
