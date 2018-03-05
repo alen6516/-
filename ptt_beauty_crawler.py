@@ -7,7 +7,7 @@ import re, sys, os, errno
 import requests
 from bs4 import BeautifulSoup
 from urllib.request import urlretrieve
-import threading
+import multiprocessing
 
 
 class Beauty_crawler():
@@ -99,8 +99,7 @@ if __name__=='__main__':
         
         elif op=="1":
             target_=input("give the target url:\n")
-            threading.Thread(target=crawler.download, args=(target_,)).start()
-            #crawler.download()
+            multiprocessing.Process(target=crawler.download, args=(target_,)).start()
 
         elif op=="2":
             crawler.set_path()
