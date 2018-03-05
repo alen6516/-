@@ -7,6 +7,8 @@ import re, sys, os, errno
 import requests
 from bs4 import BeautifulSoup
 from urllib.request import urlretrieve
+import threading
+
 
 class Beauty_crawler():
     def __init__(self):
@@ -51,12 +53,11 @@ class Beauty_crawler():
             resp=requests.get(url, verify=False)
             f.write(resp.content)
 
-    def download(self):
-        target=input("give the target url:\n")
+    def download(self, target):
         res=requests.get(target, verify=False)
         soup = BeautifulSoup(res.text)
-        pa1='https://i.imgur.com..+\.jpg'
-        pa2='https://imgur\..+'
+        pa1='https?://i.imgur.com..+\.jpg'
+        pa2='https?://imgur\..+'
 
         title = self._get_title(soup)
         post_time=self._get_post_time(soup)
@@ -68,12 +69,14 @@ class Beauty_crawler():
             ans1=re.findall(pa1, str)
             ans2=re.findall(pa2, str)
             if ans1:
-                for url in ans1:
+                #print("ans1=%s" % ans1)
+                 for url in ans1:
                     file_path=path+url.split('/')[-1]
                     #print(url)
                     #urlretrieve(url, path+url.split('/')[-1])
                     self._write(file_path, url)
             if ans2:
+                #print("ans1=%s" % ans1)
                 for url in ans2:
                     if url[-3:]=='jpg':
                         #print(url)
@@ -86,7 +89,6 @@ class Beauty_crawler():
                         #urlretrieve(url, path+url.split('/')[-1])
                         self._write(file_path, url)
 
-
 if __name__=='__main__':
     crawler=Beauty_crawler()
     op="1"
@@ -96,7 +98,9 @@ if __name__=='__main__':
             sys.exit()
         
         elif op=="1":
-            crawler.download()
+            target_=input("give the target url:\n")
+            threading.Thread(target=crawler.download, args=(target_,)).start()
+            #crawler.download()
 
         elif op=="2":
             crawler.set_path()
