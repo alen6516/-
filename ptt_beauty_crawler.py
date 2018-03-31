@@ -60,7 +60,7 @@ class Beauty_crawler():
     def download(self, target):
         res=requests.get(target, verify=False)
         soup = BeautifulSoup(res.text)
-        pa1='https?://i.imgur.com..+\.jpg'
+        pa1='https?://i.imgur\..+'
         pa2='https?://imgur\..+'
 
         title = self._get_title(soup)
@@ -74,15 +74,23 @@ class Beauty_crawler():
             ans2=re.findall(pa2, str)
             if ans1:
                 #print("ans1=%s" % ans1)
-                 for url in ans1:
-                    file_path=path+url.split('/')[-1]
-                    #print(url)
-                    #urlretrieve(url, path+url.split('/')[-1])
-                    self._write(file_path, url)
+                for url in ans1:
+                    if url[-3:]=='jpg' or url[-3:]=='gif' or url[-3:]=='png' or url[-3:]=='peg':
+                    
+                        file_path=path+url.split('/')[-1]
+                        #print(url)
+                        #urlretrieve(url, path+url.split('/')[-1])
+                        self._write(file_path, url)
+                    else:
+                        url="https://i."+url.split('https://')[1]+'.jpg'
+                        file_path=path+url.split('/')[-1]
+                        #print(url)
+                        #urlretrieve(url, path+url.split('/')[-1])
+                        self._write(file_path, url)
             if ans2:
                 #print("ans1=%s" % ans1)
                 for url in ans2:
-                    if url[-3:]=='jpg':
+                    if url[-3:]=='jpg' or url[-3:]=='gif' or url[-3:]=='jpeg' or url[-3:]=='png':
                         #print(url)
                         file_path=path+url.split('/')[-1]
                         self._write(file_path, url)
@@ -92,7 +100,6 @@ class Beauty_crawler():
                         #print(url)
                         #urlretrieve(url, path+url.split('/')[-1])
                         self._write(file_path, url)
-        print("download finished!")
 
 if __name__=='__main__':
     crawler=Beauty_crawler()
