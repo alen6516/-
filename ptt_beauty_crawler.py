@@ -7,7 +7,7 @@ import re, sys, os, errno
 import requests
 from bs4 import BeautifulSoup
 from urllib.request import urlretrieve
-import multiprocessing
+import threading
 
 
 class Beauty_crawler():
@@ -29,7 +29,11 @@ class Beauty_crawler():
         return self.download_path    
 
     def _get_title(self, soup):
-        return soup.find('meta', property="og:title")["content"]
+        result = soup.find('meta', property="og:title")["content"]
+        if ":" in result:
+            result = "_".join(result.split(":"))
+        return result
+
     def _get_post_time(self,soup):
         time_list=soup.find_all('span', {'class':'article-meta-value'})[-1].get_text().split(' ')
         # ['Wed', 'Feb', '', '7', '11:29:30', '2018']
@@ -88,18 +92,19 @@ class Beauty_crawler():
                         #print(url)
                         #urlretrieve(url, path+url.split('/')[-1])
                         self._write(file_path, url)
+        print("download finished!")
 
 if __name__=='__main__':
     crawler=Beauty_crawler()
     op="1"
     while op!="0":
-        op=input("[0]exit, [1] download, [2] set path, [3] show curr path:\n")
+        op=input("[0]exit, [1] download, [2] set path, [3] show curr path:\n>>> ")
         if op=="0":
-            sys.exit()
+            break
         
         elif op=="1":
             target_=input("give the target url:\n")
-            multiprocessing.Process(target=crawler.download, args=(target_,)).start()
+            threading.Thread(target=crawler.download, args=(target_,)).start()
 
         elif op=="2":
             crawler.set_path()
